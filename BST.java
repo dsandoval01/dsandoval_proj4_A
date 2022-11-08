@@ -11,7 +11,6 @@ public class BST{
 		else if(rootVal>k){
 			return find(k,v.left);
 		}
-//hiiiiiiiiiii
 		else if(rootVal<k){
 			return find(k, v.right);
 		}
@@ -89,7 +88,6 @@ public class BST{
 			System.out.println(v.element);
 		}
 	}
-//helloooo
 	public void displayTree()
 	{
 		Stack globalStack = new Stack();
@@ -111,7 +109,7 @@ public class BST{
 				BSTNode temp = (BSTNode)globalStack.pop();
 				if(temp != null)
 				{
-					System.out.print(temp.key);
+					System.out.print(temp.element);
 					localStack.push(temp.left);
 					localStack.push(temp.right);
 
