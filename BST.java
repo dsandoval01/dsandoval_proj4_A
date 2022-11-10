@@ -1,51 +1,69 @@
-import java.util.*;
+import java.util.*;  // for built-in Stack class
+//Binary Search Tree Class
 
 public class BST{
 
-	public BSTNode find(int k, BSTNode v){
-		int rootVal = v.element;
-		if(v == null){
-			return null;
-		}
+	private BSTNode root;
 
-		else if(rootVal>k){
-			return find(k,v.left);
-		}
-		else if(rootVal<k){
-			return find(k, v.right);
-		}
+	public BST(){
+		root = null;
+	}
 
-		else{
+	//getMin()
+	//returns Node with smallest key value in the tree c rooted at v
+	//assumes v is not null
+	public BSTNode getMin(BSTNode v){
+		if(v.left()==null){
 			return v;
 		}
-	}
-	//caca
-
-	public void recInsert(int k, BSTNode v){
-		if(k>v.element){
-			if(v.right!=null){
-				recInsert(k, v.right);
-			}
-			else if(k<= v.element){
-				if(v.left!=null){
-					recInsert(k, v.left);
-				}
-			}
-			else{
-				v.right = new BSTNode(null,k,null,v);
-			}
-			// else{
-			// 	recInsert(k, root);
-			//}
+		else{
+			return getMin(v.left());
 		}
 	}
 
-	public void insert(int k){
-		if(root == null){
-			root = new Node(k, null, null, null);
+	//returns Node with key k in the tree rooted at v
+	//returns null if k not found
+	public BSTNode find(int k, BSTNode v){
+		if(v==null){
+			return null;
+		}
+		else if(v.k()==k){
+			return v;
+		}
+		else if(v.k()>k){
+			return find(k,v.left());
 		}
 		else{
-			recInsert(k, root);
+			return find(k,v.right());
+		}
+	}
+
+
+	//insert new key into the subtree rooted at node v
+	//when v is not null
+	public void recInsert(int k, BSTNode v){
+		if(k>v.k()){
+			if(v.right()!=null){
+				recInsert(k,v.right());
+			}
+			else{
+				v.setRight(new BSTNode(v, k,null,null));
+			}
+		}else if(k<=v.k()){
+			if(v.left()!=null){
+				recInsert(k,v.left());
+			}else{
+				v.setLeft(new BSTNode(v, k, null, null));
+			}
+		}
+	}
+
+
+	public void insert(int k){
+		if(root==null){
+			root=new BSTNode(null, k, null, null);
+		} else{
+			recInsert(k,root);
 		}
 	}
 
@@ -53,42 +71,81 @@ public class BST{
 		if(v==root){
 			root=w;
 		}else{
-			if(v.parent.right=v){
-				v.parent.right=w;
+			if(v.parent().right()==v){
+				v.parent().setRight(w);
 			}
 			else{
-				v.parent.left=w;
+				v.parent().setLeft(w);
 			}
 		}
 	}
 
-	public void delete(int k){
+	public BSTNode delete(int k){
+		BSTNode toBeDeleted=find(k,root);
+		if(toBeDeleted==null){
+			return null;
+		}
+		else if(toBeDeleted.left()==null&&toBeDeleted.right()==null){
+			replace(toBeDeleted,null);
 
+		}
+		else if(toBeDeleted.left()!=null&&toBeDeleted.left()!=null){  //if two children
+			BSTNode s=getMin(toBeDeleted.right());
+			toBeDeleted.setKey(s.k());
+			replace(s,s.right());
+		}
+		else{   //one child
+			if(toBeDeleted.left()!=null){
+				replace(toBeDeleted,toBeDeleted.left());
+			}
+			else{
+				replace(toBeDeleted,toBeDeleted.right());
+			}
+
+		}
+		return toBeDeleted;
 	}
 
+
+
+	// preOrder(BSTNode v)
+	// Prints out the keys of the tree in a preorder traversal
 	public void preOrder(BSTNode v){
-		System.out.println(v.element);
-		if(v.left != null){
-			preOrder(v.left);
+		System.out.println(v.k());
+		if(v.left()==null){
+			preOrder(v.left());
 		}
-		else if(v.right != null){
-			preOrder(v.right);
+		if(v.right()!=null){
+			preOrder(v.right());
 		}
 	}
-
+		
+	// inOrder(BSTNode v)
+	// Prints out the keys of the tree in a inorder traversal
 	public void inOrder(BSTNode v){
-		System.out.println(v.left);
-		inOrder(v.right);
-
-	}
-
-	public void postOrder(BSTNode v){
-		if(v != null){
-			postOrder(v.left);
-			postOrder(v.right);
-			System.out.println(v.element);
+		if(v.left()!=null){
+			inOrder(v.left());
+			System.out.print(v.k());
+		if(v.right()!=null){
+			inOrder(v.right());
+		}
 		}
 	}
+	// postOrder(BSTNode v)
+	// Prints out the keys of the tree in a postorder traversal
+	public void postOrder(BSTNode v){
+		if(v.left()!=null){
+			postOrder(v.left());
+		}
+		if(v.right()!=null){
+			postOrder(v.right());
+		}
+		System.out.println(v.k());
+	
+	}
+
+
+
 	public void displayTree()
 	{
 		Stack globalStack = new Stack();
@@ -110,12 +167,12 @@ public class BST{
 				BSTNode temp = (BSTNode)globalStack.pop();
 				if(temp != null)
 				{
-					System.out.print(temp.element);
-					localStack.push(temp.left);
-					localStack.push(temp.right);
+					System.out.print(temp.k());
+					localStack.push(temp.left());
+					localStack.push(temp.right());
 
-					if(temp.left != null ||
-							temp.right != null)
+					if(temp.left()!= null ||
+							temp.right()!= null)
 					isRowEmpty = false;
 				}
 				else
@@ -135,5 +192,28 @@ public class BST{
 		System.out.println(
 		"......................................................");
 	}  // end displayTree()
+
+
+
+
+
+
+
+	// public void traverse(char traverseType)
+	// {
+	// 	switch(traverseType)
+	// 	{
+	// 		case 'p': System.out.print("\nPreorder traversal: ");
+	// 			preOrder(root);
+	// 			break;
+	// 		case 'i': System.out.print("\nInorder traversal:  ");
+	// 			inOrder(root);
+	// 			break;
+	// 		case 't': System.out.print("\nPostorder traversal: ");
+	// 			postOrder(root);
+	// 			break;
+	// 	}
+	// 	System.out.println();
+	// }
 
 }
