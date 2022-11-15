@@ -9,6 +9,11 @@ public class BST{
 		root = null;
 	}
 
+
+	public BSTNode getRoot(){
+		return root;
+	}
+
 	//getMin()
 	//returns Node with smallest key value in the tree c rooted at v
 	//assumes v is not null
@@ -37,8 +42,6 @@ public class BST{
 			return find(k,v.right());
 		}
 	}
-
-
 	//insert new key into the subtree rooted at node v
 	//when v is not null
 	public void recInsert(int k, BSTNode v){
@@ -105,9 +108,6 @@ public class BST{
 		}
 		return toBeDeleted;
 	}
-
-
-
 	// preOrder(BSTNode v)
 	// Prints out the keys of the tree in a preorder traversal
 	public void preOrder(BSTNode v){
@@ -148,7 +148,7 @@ public class BST{
 
 	public void displayTree()
 	{
-		Stack globalStack = new Stack();
+		Stack<BSTNode> globalStack = new Stack<BSTNode>();
 		globalStack.push(root);
 		int nBlanks = 32;
 		boolean isRowEmpty = false;
@@ -156,7 +156,7 @@ public class BST{
 		"......................................................");
 		while(isRowEmpty==false)
 		{
-			Stack localStack = new Stack();
+			Stack<BSTNode> localStack = new Stack<BSTNode>();
 			isRowEmpty = true;
 
 			for(int j=0; j<nBlanks; j++)
@@ -164,7 +164,7 @@ public class BST{
 
 			while(globalStack.isEmpty()==false)
 			{
-				BSTNode temp = (BSTNode)globalStack.pop();
+				BSTNode temp = globalStack.pop();
 				if(temp != null)
 				{
 					System.out.print(temp.k());
@@ -192,28 +192,21 @@ public class BST{
 		System.out.println(
 		"......................................................");
 	}  // end displayTree()
-
-
-
-
-
-
-
-	// public void traverse(char traverseType)
-	// {
-	// 	switch(traverseType)
-	// 	{
-	// 		case 'p': System.out.print("\nPreorder traversal: ");
-	// 			preOrder(root);
-	// 			break;
-	// 		case 'i': System.out.print("\nInorder traversal:  ");
-	// 			inOrder(root);
-	// 			break;
-	// 		case 't': System.out.print("\nPostorder traversal: ");
-	// 			postOrder(root);
-	// 			break;
-	// 	}
-	// 	System.out.println();
-	// }
+	public void traverse(char traverseType)
+	{
+		switch(traverseType)
+		{
+			case 'p': System.out.print("\nPreorder traversal: ");
+				preOrder(root);
+				break;
+			case 'i': System.out.print("\nInorder traversal:  ");
+				inOrder(root);
+				break;
+			case 't': System.out.print("\nPostorder traversal: ");
+				postOrder(root);
+				break;
+		}
+		System.out.println();
+	}
 
 }

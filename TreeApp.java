@@ -42,7 +42,7 @@ class TreeApp
 				case 'f':
 					System.out.print("\nEnter value to find: ");
 					value = getInt();
-					TNode found = theTree.find(value);
+					BSTNode found = theTree.find(value, theTree);
 					if(found != null)
 					{
 						System.out.print("\nFound: ");
